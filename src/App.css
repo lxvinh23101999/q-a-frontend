@@ -21,6 +21,7 @@
   color: #09d3ac;
 }
 .anh {
+  border: 1px solid grey;
   border-style: groove;
   width: 60px;
 }
@@ -30,12 +31,22 @@
 .mb-10 {
   margin-bottom: 10px;
 }
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mr-5 {
+  margin-right: 5px;
+}
 .bg-color {
   background-color: #E9EBEE;
 }
 .itembg-color {
   border-radius: 10px;
   background-color: #FFFFFF;
+}
+.itembg-color2 {
+  border-radius: 10px;
+  background-color: #F2F3F5;
 }
 .pd-15 {
   padding: 15px 15px 0px 15px;
@@ -45,4 +56,34 @@
   background-color:#222222;
   color: white;
   text-align: center;
+}
+.session-title {
+  color: rgb(25, 0, 255);
+}
+.session-title:hover {
+  text-decoration: none;
+}
+.session-master {
+  color: #808080;
+}
+.session-master:hover {
+  text-decoration: none;
+  color: black;
+}
+.session-number {
+  color: #365899;
+}
+.search {
+  width: 30%;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+/* When the input field gets focus, change its width to 100% */
+.search:focus {
+  width: 100%;
+}
+.more:hover {
+  cursor: pointer;
+  color:  blue;
 }
