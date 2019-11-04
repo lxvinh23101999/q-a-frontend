@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import QuestionItem from '../QuestionItem/QuestionItem';
 import SearchQuestion from '../SearchQuestion/SearchQuestion';
-import { connect } from 'react-redux';
 class QuestionFrame extends Component {
     render() {
-        let { questions, searchQuestion} = this.props;
+        let { session, searchQuestion } = this.props;
+        if (!session.questions) return "";
+        // console.log(session.questions);
+        let questions = session.questions;
         let keyWord = searchQuestion.keyWord.toLowerCase();
         let filterQuestions = [];
         questions.forEach((question) => {
-            let str = question.content;
+            let str = question.contentQuestion;
             if (str.toLowerCase().includes(keyWord)) {
                 filterQuestions.push(question);
             }
@@ -32,10 +34,4 @@ class QuestionFrame extends Component {
         );
     }
 }
-const mapStateToProps = (state) => {
-    return {
-        questions: state.questions,
-        searchQuestion: state.searchQuestion
-    }
-};
-export default connect(mapStateToProps, null)(QuestionFrame);
+export default QuestionFrame;

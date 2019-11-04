@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import SessionItem from '../SessionItem/SessionItem';
 import SearchSession from '../SearchSession/SearchSession';
 import { connect } from 'react-redux';
+import { actFetchSessionsRequest } from './../../actions/index';
 class SessionFrame extends Component {
     constructor(props) {
         super(props);
         this.state = {
             indexPagination: 1
         }
+    }
+    componentDidMount() {
+        this.props.fetchAllSessions();
     }
     onChangeIndexPagination = (e) => {
         e.preventDefault();
@@ -36,11 +40,12 @@ class SessionFrame extends Component {
     }
     render() {
         let { sessions, searchSession } = this.props;
+        console.log(sessions);
         let keyWord = searchSession.keyWord.toLowerCase();
         let { indexPagination } = this.state;
         let filterSessions = [];
         sessions.forEach((session) => {
-            let str = session.title;
+            let str = session.topic;
             if (str.toLowerCase().includes(keyWord)) {
                 filterSessions.push(session);
             }
@@ -70,7 +75,7 @@ class SessionFrame extends Component {
                     <div className="panel-body bg-color">
                         <div className="row">
                             <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                <div className="dropdown mb-30 ">
+                                {/* <div className="dropdown mb-30 ">
                                     <button className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                                         <span className="caret"></span>
                                     </button>
@@ -78,7 +83,7 @@ class SessionFrame extends Component {
                                         <li><a href="/">Phiên hỏi đáp hoạt động</a></li>
                                         <li><a href="/">Phiên hỏi đáp đã đóng</a></li>
                                     </ul>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <SearchSession></SearchSession>
@@ -114,4 +119,11 @@ const mapStateToProps = (state) => {
         searchSession: state.searchSession
     }
 };
-export default connect(mapStateToProps, null)(SessionFrame);
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        fetchAllSessions : () => {
+            dispatch(actFetchSessionsRequest());
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SessionFrame);

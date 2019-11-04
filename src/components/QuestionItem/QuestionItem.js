@@ -35,7 +35,7 @@ class QuestionItem extends Component {
                                 <Link
                                     to={'/'}
                                     className="question-content"
-                                >Câu hỏi: {question.content}
+                                >Câu hỏi: {question.contentQuestion}
                                 </Link>
                                 {/* <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> */}
                             </h4>

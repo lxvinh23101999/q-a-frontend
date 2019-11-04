@@ -109,12 +109,15 @@ import * as Types from './../constants/ActionTypes';
 //         numberOfQuestions: 100,
 //     }
 // ];
-let data = JSON.parse(localStorage.getItem('sessions'));
-let initialState = data ? data : [];
+// let data = JSON.parse(localStorage.getItem('sessions'));
+// let initialState = data ? data : [];
+let initialState = [];
 const myReducer = (state = initialState, action) => {
     switch (action.type) {
+        case Types.FETCH_SESSIONS:
+            state = action.sessions;
+            return [...state];
         case Types.ADD_SESSION:
-            console.log(action);
             let session = {
                 id: action.session.id,
                 title: action.session.title,

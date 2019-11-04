@@ -14,7 +14,7 @@ class SessionItem extends Component {
                             <Link
                                 to={`/sessions/${session.id}`}
                                 className="session-title"
-                            >{session.title}
+                            >{session.topic}
                             </Link>
                         </h4>
                         <Link
@@ -22,7 +22,7 @@ class SessionItem extends Component {
                             className="session-master"
                         >Chủ tọa: {session.master}
                         </Link>
-                        <p className="session-number">Số câu hỏi: {session.numberOfQuestions}</p>
+                        <p className="session-number">{session.questions.length === 0 ? "Chưa có câu hỏi" : `Số câu hỏi: ${session.questions.length}` }</p>
                     </div>
                 </div>
             </React.Fragment>
