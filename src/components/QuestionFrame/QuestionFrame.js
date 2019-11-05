@@ -5,7 +5,6 @@ class QuestionFrame extends Component {
     render() {
         let { session, searchQuestion } = this.props;
         if (!session.questions) return "";
-        // console.log(session.questions);
         let questions = session.questions;
         let keyWord = searchQuestion.keyWord.toLowerCase();
         let filterQuestions = [];

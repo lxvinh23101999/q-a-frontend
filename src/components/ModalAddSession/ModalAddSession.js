@@ -5,10 +5,8 @@ class ModalAddSession extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 0,
-            title: '',
-            master: '',
-            numberOfQuestions: 0
+            topic: '',
+            description: '',
         }
     }
     onChange = (e) => {
@@ -25,10 +23,8 @@ class ModalAddSession extends Component {
     }
     onClear = () => {
         this.setState({
-            id: 0,
-            title: '',
-            master: '',
-            numberOfQuestions: 0
+            topic: '',
+            description: ''
           });
     }
     render() {
@@ -52,24 +48,12 @@ class ModalAddSession extends Component {
                             <div className="modal-body">
                                 <form>
                                     <div className="form-group">
-                                        <label className="col-form-label">Id:</label>
-                                        <input type="text" className="form-control" id="recipient-name" value={this.state.id} name="id" onChange={this.onChange} />
-                                    </div>
-                                    <div className="form-group">
                                         <label className="col-form-label">Chủ đề:</label>
-                                        <input type="text" className="form-control" id="recipient-name" value={this.state.title} name="title" onChange={this.onChange} />
+                                        <input type="text" className="form-control" id="recipient-name" value={this.state.topic} name="topic" onChange={this.onChange} />
                                     </div>
                                     <div className="form-group">
                                         <label className="col-form-label">Mô tả:</label>
-                                        <textarea className="form-control" id="message-text"></textarea>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-form-label">Master:</label>
-                                        <input type="text" className="form-control" id="recipient-name" value={this.state.master} name="master" onChange={this.onChange} />
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-form-label">Chủ đề:</label>
-                                        <input type="number" className="form-control" id="recipient-name" value={this.state.numberOfQuestions} name="numberOfQuestions" onChange={this.onChange} />
+                                        <textarea className="form-control" id="message-text" value={this.state.description} name="description" onChange={this.onChange} ></textarea>
                                     </div>
                                 </form>
                             </div>
@@ -92,7 +76,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
     return {
         onAddSession : (session) => {
-            dispatch(actions.addSession(session));
+            dispatch(actions.actAddSessionRequest(session));
         }
     }
 }

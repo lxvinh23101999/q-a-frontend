@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/index';
 class SessionItem extends Component {
+    onClick = (e) => {
+        e.preventDefault();;
+        this.props.onDeleteSession(this.props.session.id);
+    }
     render() {
         let { session } = this.props;
         return (
@@ -20,9 +26,9 @@ class SessionItem extends Component {
                         <Link
                             to={`/sessions/${session.id}`}
                             className="session-master"
-                        >Chủ tọa: {session.master}
+                        >Chủ tọa: {session.nameOfOwner}
                         </Link>
-                        <p className="session-number">{session.questions.length === 0 ? "Chưa có câu hỏi" : `Số câu hỏi: ${session.questions.length}` }</p>
+                        <p className="session-number">{session.questions.length === 0 ? "Chưa có câu hỏi" : `Số câu hỏi: ${session.questions.length}` }  <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(session.createdAt)).toLocaleString()} <a href="/" onClick={this.onClick}>{session.permission ? "Xóa" : ""}</a></p>
                     </div>
                 </div>
             </React.Fragment>
@@ -30,4 +36,11 @@ class SessionItem extends Component {
         );
     }
 }
-export default SessionItem;
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onDeleteSession : (id) => {
+            dispatch(actions.actDeleteSessionRequest(id));
+        }
+    }
+}
+export default connect(null, mapDispatchToProps)(SessionItem);

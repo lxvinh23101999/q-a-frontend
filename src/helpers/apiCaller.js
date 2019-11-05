@@ -5,6 +5,7 @@ export default function callApi(endpoint, method = 'GET', body){
         method: method,
         url: `${Config.API_URL}/${endpoint}`,
         data: body,
-        // headers: {'Authorization':   'foobar'}
+        withCredentials: true,
+        headers: {'Authorization':   'Bearer ' + localStorage.getItem("token")}
     });
 };

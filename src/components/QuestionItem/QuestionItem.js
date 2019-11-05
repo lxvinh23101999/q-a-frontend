@@ -43,9 +43,9 @@ class QuestionItem extends Component {
                         <Link
                             to={'/'}
                             className="question-user"
-                        >Đăng bởi: {question.user}
+                        >Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}
                         </Link>
-                        <p className="question-number">Số câu trả lời: {question.numberOfAnswers}<a href="/" onClick={this.onClick}>Trả lời</a></p>
+                        <p className="question-number">{ question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`}<a href="/" onClick={this.onClick}> Trả lời</a></p>
                         <hr />
                         {elmAnswers}
                     </div>

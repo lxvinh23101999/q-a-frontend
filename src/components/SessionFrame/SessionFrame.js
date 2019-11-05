@@ -40,7 +40,6 @@ class SessionFrame extends Component {
     }
     render() {
         let { sessions, searchSession } = this.props;
-        console.log(sessions);
         let keyWord = searchSession.keyWord.toLowerCase();
         let { indexPagination } = this.state;
         let filterSessions = [];
@@ -116,7 +115,7 @@ class SessionFrame extends Component {
 const mapStateToProps = (state) => {
     return {
         sessions: state.sessions,
-        searchSession: state.searchSession
+        searchSession: state.searchSession,
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
