@@ -3,6 +3,7 @@ import SessionItem from '../SessionItem/SessionItem';
 import SearchSession from '../SearchSession/SearchSession';
 import { connect } from 'react-redux';
 import { actFetchSessionsRequest } from './../../actions/index';
+import Loader from '../Loader/Loader';
 class SessionFrame extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +27,7 @@ class SessionFrame extends Component {
             // document.documentElement.scrollTop = 190;
         }
         else if (aria_label === "Next" && class_Name !== "disabled") {
-            this.setState({
+            this.setState({ 
                 indexPagination: indexPagination + 1
             });
             // document.documentElement.scrollTop = 190;
@@ -39,7 +40,9 @@ class SessionFrame extends Component {
         }
     }
     render() {
-        let { sessions, searchSession } = this.props;
+        
+        let { sessions, searchSession, isLoading } = this.props;
+        if (isLoading) return <Loader></Loader>
         let keyWord = searchSession.keyWord.toLowerCase();
         let { indexPagination } = this.state;
         let filterSessions = [];
@@ -116,6 +119,7 @@ const mapStateToProps = (state) => {
     return {
         sessions: state.sessions,
         searchSession: state.searchSession,
+        isLoading: state.isLoading
     }
 };
 const mapDispatchToProps = (dispatch, props) => {

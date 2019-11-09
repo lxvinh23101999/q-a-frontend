@@ -1,27 +1,34 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/index';
+import _ from 'lodash';
+// import * as actions from '../../actions/index';
 import AnswerItem from '../AnswerItem/AnswerItem';
 import InputAnswer from '../InputAnswer/InputAnswer';
+import ShowAnswerButton from '../ShowAnswerButton/ShowAnswerButton';
+import ShowInputAnswerButton from '../ShowInputAnswerButton/ShowInputAnswerButton';
+import DeleteQuestionButton from '../DeleteQuestionButton/DeleteQuestionButton';
 // import Loader from '../Loader/Loader';
 class QuestionItem extends Component {
-    onClick = (event) => {
-        event.preventDefault();
-        this.props.onChangeIsDisplayAnswer(this.props.index);
-    }
-    
-    render() {
-        let { question, index, isDisplayAnswer } = this.props;
-        let elmAnswers = [];
-        if (isDisplayAnswer[index-1]) {
-            elmAnswers.push(<InputAnswer key={index-1}></InputAnswer>);
-            elmAnswers.push(<AnswerItem></AnswerItem>);
-            elmAnswers.push(<AnswerItem></AnswerItem>);
-            elmAnswers.push(<AnswerItem></AnswerItem>);
-            elmAnswers.push(<div><i className="fa fa-chevron-circle-down more" aria-hidden="true">Xem thêm</i></div>);
+    constructor(props) {
+        super(props);
+        this.state = {
+            isDisplayAnswer: false
         }
-        else elmAnswers = [];
+    }
+    render() {
+        let { question, answers, isDisplayInputAnswer } = this.props;
+        let index = _.findIndex(answers, function (item) { return item.questionId === question.id; });
+        let answersOfQuestion = [];  // Lấy câu trả lời của câu hỏi này
+        if (answers[index] && answers[index] !== []) {
+            answersOfQuestion = answers[index].answers;
+        }
+        let elmAnswers = [];
+        if (answersOfQuestion && answersOfQuestion !== []) {
+            elmAnswers = answersOfQuestion.map((answer, index) => {
+                return <AnswerItem key={answer.id} index={index + 1} answer={answer} />
+            });
+        }
         return (
             // idQuestion, contentQuestion, Đăng bởi ai, Thời gian đăng.
             <React.Fragment>
@@ -45,25 +52,27 @@ class QuestionItem extends Component {
                             className="question-user"
                         >Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}
                         </Link>
-                        <p className="question-number">{ question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`}<a href="/" onClick={this.onClick}> Trả lời</a></p>
+                        <p className="question-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`}</p>
+                        {question.numberOfAnswers !== 0 ? <ShowAnswerButton key={question.id} questionId={question.id}></ShowAnswerButton> : ''}
+                        <ShowInputAnswerButton questionId={question.id}></ShowInputAnswerButton>
+                        {question.deletePermission ? <DeleteQuestionButton questionId={question.id}></DeleteQuestionButton>: ''}
                         <hr />
+                        {isDisplayInputAnswer[question.id] ? <InputAnswer questionId={question.id}></InputAnswer> : ''}
                         {elmAnswers}
                     </div>
-                </div>
+                </div>  
             </React.Fragment>
         );
     }
 }
 const mapStateToProps = (state) => {
     return {
-        isDisplayAnswer : state.isDisplayAnswer
+        isDisplayInputAnswer: state.isDisplayInputAnswer,
+        answers: state.answers
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onChangeIsDisplayAnswer : (index) => {
-            dispatch(actions.changeIsDisplayAnswer(index));
-        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionItem);

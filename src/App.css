@@ -22,6 +22,7 @@
 }
 .anh {
   border: 1px solid grey;
+  border-radius: 5px;
   border-style: groove;
   width: 60px;
 }
@@ -46,10 +47,13 @@
 }
 .itembg-color2 {
   border-radius: 10px;
-  background-color: #F2F3F5;
+  background-color: rgb(225, 243, 248);
+}
+.pd-10 {
+  padding: 15px 15px 5px 15px;
 }
 .pd-15 {
-  padding: 15px 15px 0px 15px;
+  padding: 15px 15px 20px 15px;
 }
 .footer {
   border-radius: 3px;
@@ -86,4 +90,22 @@
 .more:hover {
   cursor: pointer;
   color:  blue;
+}
+.text-right {
+  float: right;
+  cursor: pointer;
+}
+.text-right:hover {
+  color: red;
+}
+.sort-selected::after {
+  content: '\f00c';
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0px 0px 0px 10px;
+  display: inline-block;
+}
+.role-hover {
+  cursor: pointer;
 }

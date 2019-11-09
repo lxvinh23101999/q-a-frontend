@@ -8,12 +8,17 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            showPassword: false
         }
     }
     onLogin = (event) => {
         event.preventDefault();
-        this.props.onLogin(this.state);
+        let infoLogin = {
+            username: this.state.username,
+            password: this.state.password
+        }
+        this.props.onLogin(infoLogin);
     }
     onChange = (event) => {
         let target = event.target;
@@ -22,6 +27,11 @@ class LoginForm extends Component {
         this.setState({
             [name]: value
         });
+    }
+    onShowPass = () => {
+        this.setState({
+            showPassword: !this.state.showPassword
+        })
     }
     render() {
         return (
@@ -39,10 +49,10 @@ class LoginForm extends Component {
                         <label htmlFor="psw"><b>Mật khẩu</b></label>
                         <div className="input-group mb-20">
                             <span className="input-group-addon" id="basic-addon1"><i className="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                            <input type="password" className="form-control" placeholder="Mật khẩu..." aria-describedby="basic-addon1" name="password" value={ this.state.password } onChange={this.onChange} required/>
+                            <input type={!this.state.showPassword ? "password" : "text"} className="form-control" placeholder="Mật khẩu..." aria-describedby="basic-addon1" name="password" value={ this.state.password } onChange={this.onChange} required/>
                         </div>
                         <label>
-                            <input type="checkbox" defaultChecked="checked" name="remember"/> Remember me
+                            <input type="checkbox" name="showPassword" onClick={this.onShowPass}/> Show Password 
                         </label>
                         <button type="button" className="login-button" onClick={this.onLogin}>Đăng nhập</button>
                     </div>

@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-class QuestionFrame extends Component {
+import { connect } from 'react-redux';
+import DeleteAnswerButton from '../DeleteAnswerButton/DeleteAnswerButton';
+import EditAnswerButton from '../EditAnswerButton/EditAnswerButton';
+import EditAnswerInput from '../EditAnswerInput/EditAnswerInput';
+class AnswerItem extends Component {
     render() {
+        const { answer, isDisplayEditAnswerInput } = this.props;
         return (
             // idQuestion, contentQuestion, Đăng bởi ai, Thời gian đăng.
             <React.Fragment>
-                <div className="media itembg-color2 pd-15 mb-20">
+                <div className="media itembg-color2 pd-10 mb-20">
                     <div className="media-left">
-                        <img src="https://www.w3schools.com/bootstrap/img_avatar4.png" alt="answer" className="media-object" style={{ width: 45 + 'px' }} />
+                        <img src="https://www.w3schools.com/bootstrap/img_avatar4.png" alt="answer" className="media-object anh" style={{ width: 45 + 'px' }} />
                     </div>
                     <div className="media-body">
-                        <h4 className="media-heading">John Doe <small><i>Posted on February 19, 2016</i></small></h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <h4 className="media-heading">{answer.nameOfOwner} <small><i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(answer.createdAt)).toLocaleString()} {answer.createdAt !== answer.updatedAt ? '( Đã chỉnh sửa )' : ''}</small></h4>
+                        {isDisplayEditAnswerInput.answerId === answer.id ? <EditAnswerInput answerId={answer.id} contentAnswer={answer.contentAnswer}></EditAnswerInput> : <p>{answer.contentAnswer}</p>}
+                        {answer.deletePermission ? <DeleteAnswerButton answerId={answer.id}></DeleteAnswerButton> : ''}
+                        {answer.editPermission ? <EditAnswerButton answerId={answer.id}></EditAnswerButton> : ''}
                     </div>
                 </div>
             </React.Fragment>
         );
     }
 }
-export default QuestionFrame;
+const mapStateToProps = (state) => {
+    return {
+        isDisplayEditAnswerInput: state.isDisplayEditAnswerInput,
+    }
+};
+export default connect(mapStateToProps, null)(AnswerItem);

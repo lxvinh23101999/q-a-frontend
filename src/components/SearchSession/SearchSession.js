@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import * as actions from '../../actions/index';
 class SearchSession extends Component {
     constructor(props) {
@@ -35,9 +36,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onSearch : (keyWord) => {
+        onSearch : _.debounce((keyWord) => {
             dispatch(actions.searchSession(keyWord));
-        }
+        },500)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchSession);

@@ -9,13 +9,27 @@ class Header extends Component {
                         <div className="container-fluid">
                             <div className="navbar-header">
                                 <a className="navbar-brand" href="/">WebSiteName</a>
+                                <ul className="nav navbar-nav">
+                                    <li className="active">
+                                        <Link
+                                            to={'/'}
+                                        >Home
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to={'/admin'}
+                                        >Admin
+                                        </Link>
+                                    </li>
+                                </ul>
                             </div>
                             <ul className="nav navbar-nav navbar-right">
                                 {/* <li><a href="/"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li> */}
                                 <li>
                                     <Link
                                         to={'/login'}
-                                    ><span className="glyphicon glyphicon-log-in"> Login</span> 
+                                    ><span className="glyphicon glyphicon-log-in"> Login</span>
                                     </Link>
                                 </li>
                             </ul>

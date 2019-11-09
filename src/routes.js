@@ -3,6 +3,7 @@ import SessionPage from './pages/SessionPage/SessionPage';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import QuestionPage from './pages/QuestionPage/QuestionPage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import AdminPage from './pages/AdminPage/AdminPage';
 const routes = [
     {
         path: '/',
@@ -18,6 +19,11 @@ const routes = [
         path: '/login',
         exact: false,
         main: ({history}) => <LoginPage history={history}/>
+    },
+    {
+        path: '/admin',
+        exact: false,
+        main: () => <AdminPage />
     },
     {
         path: '',
