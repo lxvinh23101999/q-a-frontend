@@ -4,6 +4,7 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import QuestionPage from './pages/QuestionPage/QuestionPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import AdminPage from './pages/AdminPage/AdminPage';
+import MyInfoPage from './pages/MyInfoPage/MyInfoPage';
 const routes = [
     {
         path: '/',
@@ -18,12 +19,17 @@ const routes = [
     {
         path: '/login',
         exact: false,
-        main: ({history}) => <LoginPage history={history}/>
+        main: ({history, location}) => <LoginPage history={history} location={location}/>
     },
     {
         path: '/admin',
         exact: false,
         main: () => <AdminPage />
+    },
+    {
+        path: '/myinfo',
+        exact: false,
+        main: () => <MyInfoPage />
     },
     {
         path: '',

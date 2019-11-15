@@ -15,7 +15,7 @@ class QuestionFrame extends Component {
             }
         });
         let elmQuestions = filterQuestions.map((question, index) => {
-            return <QuestionItem key={question.id} index={index + 1} question={question} />
+            return <QuestionItem key={question.id} index={index + 1} question={question} closedAtSession={session.closedAt}/>
         });
         if (Object.keys(elmQuestions).length === 0) {
             elmQuestions = <div style={{ textAlign: "center" }}><i>Không tìm thấy kết quả phù hợp</i></div>

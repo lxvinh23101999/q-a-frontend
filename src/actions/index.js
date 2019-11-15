@@ -1,19 +1,6 @@
 import * as Types from './../constants/ActionTypes';
 import callApi from './../helpers/apiCaller';
 import Swal from 'sweetalert2';
-export const actLoginRequest = (loginInfo) => {
-    return dispatch => {
-        return callApi(`users/login`, 'POST', { "username": loginInfo.username, "password": loginInfo.password }).then(res => {
-            console.log(res.data);
-        }).catch(err => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: `${err.response.data}`,
-            })
-        });
-    };
-}
 export const actResetPasswordRequest = (id) => {
     return () => {
         return callApi(`users/resetPassword/${id}`, 'POST', null).then(res => {
@@ -53,6 +40,12 @@ export const actChangeRole = (id, role) => {
         role
     }
 }
+export const searchUser = (keyWord) => {
+    return {
+        type: Types.SEARCH_USER,
+        keyWord
+    }
+}
 export const searchSession = (keyWord) => {
     return {
         type: Types.SEARCH_SESSION,
@@ -65,7 +58,12 @@ export const searchQuestion = (keyWord) => {
         keyWord
     }
 }
-
+export const filterSession = (by) => {
+    return {
+        type: Types.FILTER_SESSION,
+        by
+    }
+}
 export const changeIsLoading = () => {
     return {
         type: Types.CHANGE_ISLOADING,
@@ -118,10 +116,13 @@ export const actFetchSessionsRequest = () => {
         return callApi('sessions/list', 'GET', null).then(res => {
             setTimeout(() => {
                 dispatch(changeIsLoading());
-            },500);
+            }, 500);
             dispatch(actFetchSessions(res.data));
-        }).catch(err => {
-            console.log(err.response.data);
+        }).catch(err => {   
+            if (err.response.status === 401 || err.response.status === 403) {
+                console.log("Bạn cần đăng nhập để tiếp tục");
+            }
+            else (console.log(err.response.data));
         });
     };
 }
@@ -138,6 +139,11 @@ export const actFetchSessionByIdRequest = (id) => {
         });
     };
 }
+// export const actCheckHasPasswordRequest = () => {
+//     return dispatch => {
+
+//     }
+// }
 export const actFetchSessionById = (session) => {
     return {
         type: Types.FETCH_SESSION_BY_ID,
@@ -177,19 +183,17 @@ export const actAddUser = (user) => {
         user
     }
 }
-export const actAddSessionRequest = (sessionInfo) => {
-    return dispatch => {
-        return callApi('sessions/create', 'POST', sessionInfo).then(res => {
-            dispatch(actAddSession(res.data));
-        }).catch(err => {
-            console.log(err.response.data);
-        });
-    };
-}
 export const actAddSession = (data) => {
     return {
         type: Types.ADD_SESSION,
         data
+    }
+}
+export const actChangeClosedAtSession = (id, closedAt) => {
+    return {
+        type: Types.CHANGE_CLOSEDATSESSION,
+        id,
+        closedAt
     }
 }
 export const actAddQuestionRequest = (questionInfo) => {
@@ -272,6 +276,12 @@ export const actFetchAnswersOfQuestionRequest = (questionId) => { // Lấy tất
         });
     };
 }
+export const actHideAnswersOfQuestion = (questionId) => {
+    return {
+        type: Types.HIDE_ANSWERSOFQUESTION,
+        questionId
+    }
+}
 export const actFetchAnswersOfQuestion = (questionId, data) => {
     return {
         type: Types.FETCH_ANSWERS_BY_QUESTIONID,
@@ -347,6 +357,24 @@ export const actEditAnswerRequest = (id, contentAnswer) => {
 export const actEditAnswer = (answer) => {
     return {
         type: Types.EDIT_ANSWER,
-        answer 
+        answer
+    }
+}
+export const actFetchMyAllQuestions = (questions) => {
+    return {
+        type: Types.FETCH_MYALLQUESTIONS,
+        questions
+    }
+}
+export const actFetchMyAllAnswers = (answers) => {
+    return {
+        type: Types.FETCH_MYALLANSWERS,
+        answers
+    }
+}
+export const actFetchUserInfo = (user) => {
+    return {
+        type: Types.FETCH_USERINFO,
+        user
     }
 }

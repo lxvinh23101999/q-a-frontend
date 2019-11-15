@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import UserItem from '../UserItem/UserItem';    
+import SearchUser from '../SearchUser/SearchUser';    
 import * as actions from '../../actions/index';
+import _ from 'lodash';
 class UserList extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
     componentDidMount() {
         this.props.fetchAllUsers();
     }
     render() {
-        let { users, isDisplayAddUserForm } = this.props;
-        let elmUsers = users.map((user, index) => {
+        let { users, searchUser } = this.props;
+        let filterUsers = [];
+        _.forEach(users, (item) => {
+            let name = item.name.toLowerCase();
+            let userName = item.username.toLowerCase();
+            let role = item.role.toLowerCase();
+            let createdDate = (new Date(item.createdAt)).toLocaleDateString();
+            if (name.includes(searchUser.name.toLowerCase())) {
+                if (userName.includes(searchUser.userName.toLowerCase())) {
+                    if (role === searchUser.role || searchUser.role === "all") {
+                        if (createdDate.includes(searchUser.createdDate)) {
+                            filterUsers.push(item);
+                        }
+                    }
+                }
+            }
+        })
+        let elmUsers = filterUsers.map((user, index) => {
             return <UserItem key={user.id} index={index + 1} user={user} />
         });
         return (
@@ -24,34 +39,15 @@ class UserList extends Component {
                             <th className="text-center">Username</th>
                             <th className="text-center">Vai trò</th>
                             <th className="text-center">Ngày tạo</th>
-                            {isDisplayAddUserForm ? <th></th> : <th className="text-center">Hành động</th>}
+                            <th className="text-center">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type="text" className="form-control" name="filterName" />
-                            </td>
-                            <td>
-                                <input type="text" className="form-control" name="filterName" />
-                            </td>
-                            <td>
-                                <select className="form-control" name="filterStatus">
-                                    <option value={-1}>Tất cả</option>
-                                    <option value={0}>Admin</option>
-                                    <option value={0}>Master</option>
-                                    <option value={1}>Student</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" className="form-control" name="filterName" />    
-                            </td>
-                            <td></td>
-                        </tr>
+                        <SearchUser></SearchUser>
                         {elmUsers}
                     </tbody>
                 </table>
+                {elmUsers.length === 0 ? <p style={{color: 'red'}}><i>Không tìm thấy kết quả phù hợp</i></p> : ""}
             </React.Fragment>
         );
     }
@@ -59,7 +55,7 @@ class UserList extends Component {
 const mapStateToProps = (state) => {
     return {
         users: state.users,
-        isDisplayAddUserForm: state.isDisplayAddUserForm
+        searchUser: state.searchUser
     }
 };
 const mapDispatchToProps = (dispatch, props) => {

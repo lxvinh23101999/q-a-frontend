@@ -55,6 +55,17 @@
 .pd-15 {
   padding: 15px 15px 20px 15px;
 }
+.pr-5 {
+  padding-right: 5px;
+}
+.sort-selected::after {
+  content: '\f00c';
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0px 0px 0px 10px;
+  display: inline-block;
+}
 .footer {
   border-radius: 3px;
   background-color:#222222;

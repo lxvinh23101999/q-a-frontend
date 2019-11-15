@@ -8,6 +8,7 @@ import InputAnswer from '../InputAnswer/InputAnswer';
 import ShowAnswerButton from '../ShowAnswerButton/ShowAnswerButton';
 import ShowInputAnswerButton from '../ShowInputAnswerButton/ShowInputAnswerButton';
 import DeleteQuestionButton from '../DeleteQuestionButton/DeleteQuestionButton';
+import HideAnswerButton from '../HideAnswerButton/HideAnswerButton';
 // import Loader from '../Loader/Loader';
 class QuestionItem extends Component {
     constructor(props) {
@@ -17,16 +18,17 @@ class QuestionItem extends Component {
         }
     }
     render() {
-        let { question, answers, isDisplayInputAnswer } = this.props;
+        let { question, answers, closedAtSession, isDisplayInputAnswer } = this.props;
         let index = _.findIndex(answers, function (item) { return item.questionId === question.id; });
         let answersOfQuestion = [];  // Lấy câu trả lời của câu hỏi này
+        let isDisplayHideAnswerButton = answers[index] ? answers[index].isDisplayHideAnswerButton : false;
         if (answers[index] && answers[index] !== []) {
             answersOfQuestion = answers[index].answers;
         }
         let elmAnswers = [];
         if (answersOfQuestion && answersOfQuestion !== []) {
             elmAnswers = answersOfQuestion.map((answer, index) => {
-                return <AnswerItem key={answer.id} index={index + 1} answer={answer} />
+                return <AnswerItem key={answer.id} index={index + 1} answer={answer} closedAtSession={closedAtSession} />
             });
         }
         return (
@@ -53,14 +55,15 @@ class QuestionItem extends Component {
                         >Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}
                         </Link>
                         <p className="question-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`}</p>
-                        {question.numberOfAnswers !== 0 ? <ShowAnswerButton key={question.id} questionId={question.id}></ShowAnswerButton> : ''}
-                        <ShowInputAnswerButton questionId={question.id}></ShowInputAnswerButton>
-                        {question.deletePermission ? <DeleteQuestionButton questionId={question.id}></DeleteQuestionButton>: ''}
+                        {question.numberOfAnswers !== 0 && !isDisplayHideAnswerButton ? <ShowAnswerButton key={question.id} questionId={question.id}></ShowAnswerButton> : ''}
+                        {(new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <ShowInputAnswerButton questionId={question.id}></ShowInputAnswerButton> : ""}
+                        {question.deletePermission ? <DeleteQuestionButton questionId={question.id}></DeleteQuestionButton> : ''}
                         <hr />
-                        {isDisplayInputAnswer[question.id] ? <InputAnswer questionId={question.id}></InputAnswer> : ''}
+                        {isDisplayInputAnswer[question.id] && (new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <InputAnswer questionId={question.id}></InputAnswer> : ''}
                         {elmAnswers}
+                        {question.numberOfAnswers !== 0 && isDisplayHideAnswerButton ? <HideAnswerButton questionId={question.id}></HideAnswerButton> : ''}
                     </div>
-                </div>  
+                </div>
             </React.Fragment>
         );
     }

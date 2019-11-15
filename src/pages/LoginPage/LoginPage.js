@@ -5,7 +5,7 @@ class Login extends Component {
         // console.log(this.props.history);
         return (
             <React.Fragment>
-                <LoginForm history={this.props.history}></LoginForm>
+                <LoginForm history={this.props.history} location={this.props.location}></LoginForm>
             </React.Fragment>
         );      
     }

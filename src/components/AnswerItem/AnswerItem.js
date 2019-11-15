@@ -5,7 +5,7 @@ import EditAnswerButton from '../EditAnswerButton/EditAnswerButton';
 import EditAnswerInput from '../EditAnswerInput/EditAnswerInput';
 class AnswerItem extends Component {
     render() {
-        const { answer, isDisplayEditAnswerInput } = this.props;
+        const { answer, isDisplayEditAnswerInput, closedAtSession } = this.props;
         return (
             // idQuestion, contentQuestion, Đăng bởi ai, Thời gian đăng.
             <React.Fragment>
@@ -15,9 +15,9 @@ class AnswerItem extends Component {
                     </div>
                     <div className="media-body">
                         <h4 className="media-heading">{answer.nameOfOwner} <small><i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(answer.createdAt)).toLocaleString()} {answer.createdAt !== answer.updatedAt ? '( Đã chỉnh sửa )' : ''}</small></h4>
-                        {isDisplayEditAnswerInput.answerId === answer.id ? <EditAnswerInput answerId={answer.id} contentAnswer={answer.contentAnswer}></EditAnswerInput> : <p>{answer.contentAnswer}</p>}
+                        {isDisplayEditAnswerInput.answerId === answer.id && (new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <EditAnswerInput answerId={answer.id} contentAnswer={answer.contentAnswer}></EditAnswerInput> : <p><i className="fa fa-quote-left" aria-hidden="true"></i> {answer.contentAnswer} <i className="fa fa-quote-right" aria-hidden="true"></i></p>}
                         {answer.deletePermission ? <DeleteAnswerButton answerId={answer.id}></DeleteAnswerButton> : ''}
-                        {answer.editPermission ? <EditAnswerButton answerId={answer.id}></EditAnswerButton> : ''}
+                        {(new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) && answer.editPermission ? <EditAnswerButton answerId={answer.id}></EditAnswerButton> : ""}
                     </div>
                 </div>
             </React.Fragment>

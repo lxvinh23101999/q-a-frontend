@@ -28,9 +28,20 @@ class Header extends Component {
                                 {/* <li><a href="/"><span className="glyphicon glyphicon-user"></span> Sign Up</a></li> */}
                                 <li>
                                     <Link
+                                        to={'/myinfo'}
+                                    >Thông tin
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
                                         to={'/login'}
                                     ><span className="glyphicon glyphicon-log-in"> Login</span>
                                     </Link>
+                                </li>
+                                <li>
+                                    <a href="/" onClick={this.onLogout}
+                                    ><span className="glyphicon glyphicon-log-in"> Logout</span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

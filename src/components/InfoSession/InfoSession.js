@@ -15,7 +15,6 @@ class QuestionPage extends Component {
                         </div>
                     </div>
                 </div>
-
             </React.Fragment>
         );
     }

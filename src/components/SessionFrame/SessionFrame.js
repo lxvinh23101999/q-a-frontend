@@ -4,6 +4,7 @@ import SearchSession from '../SearchSession/SearchSession';
 import { connect } from 'react-redux';
 import { actFetchSessionsRequest } from './../../actions/index';
 import Loader from '../Loader/Loader';
+import FilterSession from '../FilterSession/FilterSession';
 class SessionFrame extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +28,7 @@ class SessionFrame extends Component {
             // document.documentElement.scrollTop = 190;
         }
         else if (aria_label === "Next" && class_Name !== "disabled") {
-            this.setState({ 
+            this.setState({
                 indexPagination: indexPagination + 1
             });
             // document.documentElement.scrollTop = 190;
@@ -40,16 +41,27 @@ class SessionFrame extends Component {
         }
     }
     render() {
-        
-        let { sessions, searchSession, isLoading } = this.props;
+
+        let { sessions, searchSession, filterBy, isLoading } = this.props;
         if (isLoading) return <Loader></Loader>
         let keyWord = searchSession.keyWord.toLowerCase();
         let { indexPagination } = this.state;
         let filterSessions = [];
+        console.log(filterBy);
         sessions.forEach((session) => {
             let str = session.topic;
             if (str.toLowerCase().includes(keyWord)) {
-                filterSessions.push(session);
+                if (filterBy === "unlock") {
+                    if ((new Date(session.closedAt).getTime() - Date.now() > 0 || !session.closedAt)) {
+                        filterSessions.push(session);
+                    }
+                }
+                else if (filterBy === "lock") {
+                    if ((new Date(session.closedAt).getTime() - Date.now() < 0 && session.closedAt)) {
+                        filterSessions.push(session);
+                    }
+                }
+                else filterSessions.push(session);
             }
         });
         let subSessions = [];
@@ -62,7 +74,7 @@ class SessionFrame extends Component {
             return <SessionItem key={session.id} index={index + 1} session={session} />
         });
         if (Object.keys(elmSessions).length === 0) {
-            elmSessions = <div style={{textAlign: "center"}}><i>Không tìm thấy kết quả phù hợp</i></div>
+            elmSessions = <div style={{ textAlign: "center" }}><i>Không tìm thấy kết quả phù hợp</i></div>
         }
         let elmPaginations = [];
         let index = 1;
@@ -73,19 +85,11 @@ class SessionFrame extends Component {
         return (
             <React.Fragment>
                 <div className="panel panel-primary">
-                    <div className="panel-heading"><h4><i className="fa fa-bars" aria-hidden="true" style={{ marginRight: 10 + 'px' }}></i>Danh sách phiên hỏi đáp</h4></div>
+                    <div className="panel-heading"><h4><i className="fa fa-bars" aria-hidden="true" style={{ marginRight: 10 + 'px' }}></i>{filterBy === "all" ? "Danh sách tất cả phiên hỏi đáp" : filterBy === "unlock" ? "Danh sách phiên hỏi đáp đang hoạt động": "Danh sách phiên hỏi đáp đã đóng"}</h4></div>
                     <div className="panel-body bg-color">
                         <div className="row">
                             <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                {/* <div className="dropdown mb-30 ">
-                                    <button className="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span className="caret"></span>
-                                    </button>
-                                    <ul className="dropdown-menu">
-                                        <li><a href="/">Phiên hỏi đáp hoạt động</a></li>
-                                        <li><a href="/">Phiên hỏi đáp đã đóng</a></li>
-                                    </ul>
-                                </div> */}
+                                <FilterSession></FilterSession>
                             </div>
                             <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <SearchSession></SearchSession>
@@ -99,13 +103,13 @@ class SessionFrame extends Component {
                                 <li className={indexPagination === 1 ? "disabled" : ""}>
                                     <a href="/" aria-label="Previous" onClick={this.onChangeIndexPagination}>
                                         &laquo;
-                                        </a>
+                                    </a>
                                 </li>
                                 {elmPaginations}
                                 <li className={indexPagination === elmPaginations.length || elmPaginations.length === 0 ? "disabled" : ""}>
                                     <a href="/" aria-label="Next" onClick={this.onChangeIndexPagination}>
                                         &raquo;
-                                        </a>
+                                    </a>
                                 </li>
                             </ul>
                         </nav>
@@ -119,12 +123,13 @@ const mapStateToProps = (state) => {
     return {
         sessions: state.sessions,
         searchSession: state.searchSession,
+        filterBy: state.filterSession,
         isLoading: state.isLoading
     }
 };
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        fetchAllSessions : () => {
+        fetchAllSessions: () => {
             dispatch(actFetchSessionsRequest());
         }
     }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom';
+import callApi from '../../helpers/apiCaller';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/index';
+import { Redirect } from 'react-router-dom';
+// import * as actions from '../../actions/index';
 import './style.css';
 class LoginForm extends Component {
     constructor(props) {
@@ -9,16 +10,26 @@ class LoginForm extends Component {
         this.state = {
             username: "",
             password: "",
-            showPassword: false
+            showPassword: false,
+            redirectToReferrer: false,
+            error: "",
         }
     }
     onLogin = (event) => {
         event.preventDefault();
-        let infoLogin = {
+        let loginInfo = {
             username: this.state.username,
             password: this.state.password
         }
-        this.props.onLogin(infoLogin);
+        callApi(`users/login`, 'POST', { "username": loginInfo.username, "password": loginInfo.password }).then(res => {
+            this.setState(() => ({
+                redirectToReferrer: true
+            }));
+        }).catch(err => {
+            this.setState({
+                error: err.response.data
+            })
+        });
     }
     onChange = (event) => {
         let target = event.target;
@@ -34,27 +45,31 @@ class LoginForm extends Component {
         })
     }
     render() {
+        if (this.state.redirectToReferrer) {
+            return <Redirect to={'/'} />;
+        }
         return (
             <React.Fragment>
                 <form>
                     <div className="imgcontainer">
                         <img src="https://cdn0.iconfinder.com/data/icons/customer-service-and-feedback-part-2/64/Q_A-session-512.png" alt="Avatar" className="avatar" />
                     </div>
-                    <div className="container" style={{width: 50 + '%'}}>
+                    <div className="container" style={{ width: 50 + '%' }}>
                         <label htmlFor="uname"><b>Tên đăng nhập</b></label>
                         <div className="input-group mb-20">
                             <span className="input-group-addon" id="basic-addon1"><i className="fa fa-user" aria-hidden="true"></i></span>
-                            <input type="text" className="form-control" placeholder="Tên đăng nhập..." aria-describedby="basic-addon1" name="username" value={ this.state.username } onChange={this.onChange} required/>
+                            <input type="text" className="form-control" placeholder="Tên đăng nhập..." aria-describedby="basic-addon1" name="username" value={this.state.username} onChange={this.onChange} />
                         </div>
                         <label htmlFor="psw"><b>Mật khẩu</b></label>
                         <div className="input-group mb-20">
                             <span className="input-group-addon" id="basic-addon1"><i className="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                            <input type={!this.state.showPassword ? "password" : "text"} className="form-control" placeholder="Mật khẩu..." aria-describedby="basic-addon1" name="password" value={ this.state.password } onChange={this.onChange} required/>
+                            <input type={!this.state.showPassword ? "password" : "text"} className="form-control" placeholder="Mật khẩu..." aria-describedby="basic-addon1" name="password" value={this.state.password} onChange={this.onChange} />
                         </div>
                         <label>
-                            <input type="checkbox" name="showPassword" onClick={this.onShowPass}/> Show Password 
+                            <input type="checkbox" name="showPassword" onClick={this.onShowPass} /> Show Password
                         </label>
-                        <button type="button" className="login-button" onClick={this.onLogin}>Đăng nhập</button>
+                        {this.state.error ? <p style={{ color: 'red', marginTop: '5px' }}><i>{this.state.error}</i></p> : ''}
+                        <button type="submit" className="login-button" onClick={this.onLogin}>Đăng nhập</button>
                     </div>
                 </form>
             </React.Fragment>
@@ -67,9 +82,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onLogin : (loginInfo) => {
-            dispatch(actions.actLoginRequest(loginInfo));
-        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

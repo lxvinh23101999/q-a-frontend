@@ -3,10 +3,11 @@ import _ from 'lodash';
 let initialState = [];
 const myReducer = (state = initialState, action) => {
     switch (action.type) {
-        case Types.FETCH_ANSWERS_BY_QUESTIONID: 
+        case Types.FETCH_ANSWERS_BY_QUESTIONID:
             let payload = {
                 questionId: action.questionId,
-                answers: action.data
+                answers: action.data,
+                isDisplayHideAnswerButton: true,
             }
             let fetchIndex = _.findIndex(state, function (item) { return item.questionId === action.questionId; });
             if (fetchIndex === -1) {
@@ -14,6 +15,17 @@ const myReducer = (state = initialState, action) => {
             }
             else {
                 state[fetchIndex].answers = payload.answers;
+            }
+            return [...state];
+        case Types.HIDE_ANSWERSOFQUESTION:
+            let hideIndex = _.findIndex(state, function (item) { return item.questionId === action.questionId; });
+            if (hideIndex === -1) {
+                console.log('Chưa hiển thị câu hỏi');
+            }
+            else {
+                _.remove(state, (item) => {
+                    return item.questionId === action.questionId;
+                });
             }
             return [...state];
         case Types.ADD_ANSWER:
@@ -37,17 +49,17 @@ const myReducer = (state = initialState, action) => {
         case Types.DELETE_ANSWER:
             let answerId = action.answerId;
             let questionId = parseInt(action.questionId);
-            let deleteIndex = _.findIndex(state, function(item) { return item.questionId === questionId; });
+            let deleteIndex = _.findIndex(state, function (item) { return item.questionId === questionId; });
             _.remove(state[deleteIndex].answers, answer => {
                 return answer.id === answerId;
             });
             return [...state];
         case Types.EDIT_ANSWER:
-            let editIndex = _.findIndex(state, function(item) { return item.questionId === parseInt(action.answer.questionId); });
-            let editAnswerIndex = _.findIndex(state[editIndex].answers, function(item) { return item.id === parseInt(action.answer.id); });
+            let editIndex = _.findIndex(state, function (item) { return item.questionId === parseInt(action.answer.questionId); });
+            let editAnswerIndex = _.findIndex(state[editIndex].answers, function (item) { return item.id === parseInt(action.answer.id); });
             state[editIndex].answers[editAnswerIndex].contentAnswer = action.answer.contentAnswer;
             state[editIndex].answers[editAnswerIndex].updatedAt = action.answer.updatedAt;
-            return [...state];    
+            return [...state];
         default:
             return [...state];
     }
