@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-class QuestionPage extends Component {
+class InfoSession extends Component {
     render() {
         return (
             <React.Fragment>
@@ -19,4 +19,4 @@ class QuestionPage extends Component {
         );
     }
 }
-export default QuestionPage;
+export default InfoSession;

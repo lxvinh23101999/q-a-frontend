@@ -24,9 +24,9 @@ class MyInfoBody extends Component {
             <React.Fragment>
                 <div className="container">
                     <ul className="nav nav-tabs">
-                        <li role="presentation" className={name === "basicInfo" ? "active" : ""}><a href="/"   name="basicInfo" onClick={this.onClick}>Thông tin cơ bản</a></li>
-                        <li role="presentation" className={name === "allQuestions" ? "active" : ""}><a href="/"  name="allQuestions" onClick={this.onClick}>Quản lý câu hỏi <span className="badge">{this.props.questions.length}</span></a></li>
-                        <li role="presentation" className={name === "allAnswers" ? "active" : ""}><a href="/"  name="allAnswers" onClick={this.onClick}>Quản lý câu trả lời <span className="badge">{this.props.answers.length}</span></a></li>
+                        <li role="presentation" className={name === "basicInfo" ? "active" : ""}><a href="/" name="basicInfo" onClick={this.onClick}>Thông tin cơ bản</a></li>
+                        <li role="presentation" className={name === "allQuestions" ? "active" : ""}><a href="/" name="allQuestions" onClick={this.onClick}>Quản lý câu hỏi <span className="badge">{this.props.questions.length}</span></a></li>
+                        <li role="presentation" className={name === "allAnswers" ? "active" : ""}><a href="/" name="allAnswers" onClick={this.onClick}>Quản lý câu trả lời <span className="badge">{this.props.answers.length}</span></a></li>
                     </ul>
                     {name === "basicInfo" ? <MyBasicInfo user={this.props.user}></MyBasicInfo> : name === "allQuestions" ? <MyAllQuestions questions={this.props.questions}></MyAllQuestions> : <MyAllAnswers></MyAllAnswers>}
                 </div>

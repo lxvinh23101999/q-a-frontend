@@ -4,9 +4,10 @@ let initialState = [];
 const myReducer = (state = initialState, action) => {
     switch (action.type) {
         case Types.FETCH_ANSWERS_BY_QUESTIONID:
+            let arr = _.orderBy(action.data, o => o.likeUsers.length, "desc");
             let payload = {
                 questionId: action.questionId,
-                answers: action.data,
+                answers: arr,
                 isDisplayHideAnswerButton: true,
             }
             let fetchIndex = _.findIndex(state, function (item) { return item.questionId === action.questionId; });
@@ -15,6 +16,7 @@ const myReducer = (state = initialState, action) => {
             }
             else {
                 state[fetchIndex].answers = payload.answers;
+                state[fetchIndex].isDisplayHideAnswerButton = payload.isDisplayHideAnswerButton;
             }
             return [...state];
         case Types.HIDE_ANSWERSOFQUESTION:
@@ -40,11 +42,11 @@ const myReducer = (state = initialState, action) => {
                 let answers = [answer];
                 let payload = {
                     questionId: parseInt(answer.questionId),
-                    answers: answers
+                    answers: answers,
                 }
-                state.push(payload);
+                state.unshift(payload);
             }
-            else state[addIndex].answers.push(answer);
+            else state[addIndex].answers.unshift(answer);
             return [...state];
         case Types.DELETE_ANSWER:
             let answerId = action.answerId;
@@ -59,6 +61,21 @@ const myReducer = (state = initialState, action) => {
             let editAnswerIndex = _.findIndex(state[editIndex].answers, function (item) { return item.id === parseInt(action.answer.id); });
             state[editIndex].answers[editAnswerIndex].contentAnswer = action.answer.contentAnswer;
             state[editIndex].answers[editAnswerIndex].updatedAt = action.answer.updatedAt;
+            return [...state];
+        case Types.LIKE_ANSWER:
+            let questionIndex = _.findIndex(state, function (item) { return item.questionId === action.questionId; });
+            let likeIndex = _.findIndex(state[questionIndex].answers, function (item) { return item.id === action.answerId; });
+            if (state[questionIndex].answers[likeIndex].isLiked) {
+                state[questionIndex].answers[likeIndex].isLiked = false;
+                state[questionIndex].answers[likeIndex].likeUsers.pop();
+            }
+            else {
+                state[questionIndex].answers[likeIndex].isLiked = true;
+                if (!state[questionIndex].answers[likeIndex].likeUsers) {
+                    state[questionIndex].answers[likeIndex].likeUsers = [];
+                }
+                state[questionIndex].answers[likeIndex].likeUsers.push(-1);
+            }
             return [...state];
         default:
             return [...state];

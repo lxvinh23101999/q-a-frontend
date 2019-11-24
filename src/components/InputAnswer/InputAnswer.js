@@ -33,7 +33,7 @@ class InputAnswer extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="input-group">
+                <div className="input-group" style={{marginBottom: '10px'}}>
                     <span className="input-group-addon"><i className="glyphicon glyphicon-send"></i></span>
                     {/* ref={(inputAnswer) => { this.nameInput = inputAnswer; }} */}
                     <input className="form-control" type="text" placeholder="Viết trả lời..."  value={this.state.contentAnswer} name="contentAnswer" onChange={this.onChange} onKeyPress={this.onKeyPress} />

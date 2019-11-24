@@ -96,35 +96,11 @@ export const resetIsDisplayEditAnswerInput = () => {
         type: Types.RESET_ISDISPLAYEDITANSWERINPUT
     }
 }
-export const actFetchUsersRequest = () => {
-    return dispatch => {
-        return callApi('users/list', 'GET', null).then(res => {
-            dispatch(actFetchUsers(res.data));
-        }).catch(err => {
-            console.log(err.response.data);
-        });
-    };
-}
 export const actFetchUsers = (users) => {
     return {
         type: Types.FETCH_USERS,
         users
     }
-}
-export const actFetchSessionsRequest = () => {
-    return dispatch => {
-        return callApi('sessions/list', 'GET', null).then(res => {
-            setTimeout(() => {
-                dispatch(changeIsLoading());
-            }, 500);
-            dispatch(actFetchSessions(res.data));
-        }).catch(err => {   
-            if (err.response.status === 401 || err.response.status === 403) {
-                console.log("Bạn cần đăng nhập để tiếp tục");
-            }
-            else (console.log(err.response.data));
-        });
-    };
 }
 export const actFetchSessions = (sessions) => {
     return {
@@ -132,41 +108,36 @@ export const actFetchSessions = (sessions) => {
         sessions
     }
 }
-export const actFetchSessionByIdRequest = (id) => {
-    return dispatch => {
-        return callApi(`sessions/getbyid/${id}`, 'GET', null).then(res => {
-            dispatch(actFetchSessionById(res.data));
-        });
-    };
+export const actFetchManageSessions = (sessions) => {
+    return {
+        type: Types.FETCH_MANAGESESSIONS,
+        sessions
+    }
 }
-// export const actCheckHasPasswordRequest = () => {
-//     return dispatch => {
-
-//     }
-// }
+export const actFetchSurveys = (surveys) => {
+    return {
+        type: Types.FETCH_SURVEYS,
+        surveys
+    }
+}
+export const actFetchManageSurveys = (surveys) => {
+    return {
+        type: Types.FETCH_MANAGESURVEYS,
+        surveys
+    }
+}
 export const actFetchSessionById = (session) => {
     return {
         type: Types.FETCH_SESSION_BY_ID,
         session
     }
 }
-// export const actCheckLoggedRequest = () => {
-//     return dispatch => {
-//         return callApi(`users/checkLogged`, 'GET', null).then(res => {
-//             dispatch(actChangeIsLogged(res.data.status, res.data.userInfo));
-//         }).catch(err => {
-//             console.log(err.response.data);
-//             dispatch(actChangeIsLogged(err.response.data.status, err.response.data.userInfo));
-//         });
-//     };
-// }
-// export const actChangeIsLogged = (status, userInfo) => {
-//     return {
-//         type: Types.CHANGE_ISLOGGED,
-//         status,
-//         userInfo
-//     }
-// }
+export const actFetchSurveyQuestionsBySurveyId = (surveyQuestions) => {
+    return {
+        type: Types.FETCH_SURVEYQUESTIONS_BY_SURVEYID,
+        surveyQuestions
+    }
+}
 export const actAddUserRequest = (userInfo) => {
     return dispatch => {
         return callApi('users/create', 'POST', userInfo).then(res => {
@@ -183,6 +154,12 @@ export const actAddUser = (user) => {
         user
     }
 }
+export const actAddSurvey = (data) => {
+    return {
+        type: Types.ADD_SURVEY,
+        data
+    }
+}
 export const actAddSession = (data) => {
     return {
         type: Types.ADD_SESSION,
@@ -192,6 +169,13 @@ export const actAddSession = (data) => {
 export const actChangeClosedAtSession = (id, closedAt) => {
     return {
         type: Types.CHANGE_CLOSEDATSESSION,
+        id,
+        closedAt
+    }
+}
+export const actChangeClosedAtSurvey = (id, closedAt) => {
+    return {
+        type: Types.CHANGE_CLOSEDATSURVEY,
         id,
         closedAt
     }
@@ -209,6 +193,12 @@ export const actAddQuestion = (data) => {
     return {
         type: Types.ADD_QUESTION,
         data
+    }
+}
+export const actAddSurveyQuestion = (surveyQuestion) => {
+    return {
+        type: Types.ADD_SURVEYQUESTION,
+        surveyQuestion
     }
 }
 export const actDeleteUserRequest = (id) => {
@@ -248,6 +238,24 @@ export const actDeleteSessionRequest = (id) => {
 export const actDeleteSession = (id) => {
     return {
         type: Types.DELETE_SESSION,
+        id
+    }
+}
+export const actDeleteManageSession = (id) => {
+    return {
+        type: Types.DELETE_MANAGESESSION,
+        id
+    }
+}
+export const actDeleteSurvey = (id) => {
+    return {
+        type: Types.DELETE_SURVEY,
+        id
+    }
+}
+export const actDeleteManageSurvey = (id) => {
+    return {
+        type: Types.DELETE_MANAGESURVEY,
         id
     }
 }
@@ -307,6 +315,12 @@ export const actDeleteQuestionRequest = (id) => {
 export const actDeleteQuestion = (id) => {
     return {
         type: Types.DELETE_QUESTION,
+        id
+    }
+}
+export const actDeleteSurveyQuestion = (id) => {
+    return {
+        type: Types.DELETE_SURVEYQUESTION,
         id
     }
 }
@@ -376,5 +390,25 @@ export const actFetchUserInfo = (user) => {
     return {
         type: Types.FETCH_USERINFO,
         user
+    }
+}
+export const actVoteSurvey = (data, userInfo) => {
+    return {
+        type: Types.VOTE_SURVEY,
+        data,
+        userInfo
+    }
+}
+export const actLikeQuestion = (questionId) => {
+    return {
+        type: Types.LIKE_QUESTION,
+        questionId
+    }
+}
+export const actLikeAnswer = (questionId, answerId) => {
+    return {
+        type: Types.LIKE_ANSWER,
+        questionId,
+        answerId
     }
 }

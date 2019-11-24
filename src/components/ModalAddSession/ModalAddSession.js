@@ -82,7 +82,7 @@ class ModalAddSession extends Component {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-danger" data-dismiss="modal"><span className="fa fa-ban" aria-hidden="true"></span> Thoát</button>
                                 <button type="button" className="btn btn-info" onClick={this.onClear}><span className="fa fa-refresh mr-5"></span> Làm mới</button>
-                                <button type="button" className="btn btn-success" onClick={this.onSubmit}><span className="fa fa-plus mr-5"></span> Lưu lại</button>
+                                <button type="button" className="btn btn-success" data-dismiss="modal" onClick={this.onSubmit}><span className="fa fa-plus mr-5"></span> Lưu lại</button>
                             </div>
                         </div>
                     </div>

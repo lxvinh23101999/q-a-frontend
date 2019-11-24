@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 class MyAllQuestions extends Component {
     render() {
-        let { questions } = this.props;
+        // let { questions } = this.props;
         // let elmQuestions = questions.map((question, index) => {
         //     return <QuestionItem key={question.id} index={index + 1} question={question} closedAtSession={session.closedAt}/>
         // });

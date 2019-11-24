@@ -9,6 +9,7 @@ import ShowAnswerButton from '../ShowAnswerButton/ShowAnswerButton';
 import ShowInputAnswerButton from '../ShowInputAnswerButton/ShowInputAnswerButton';
 import DeleteQuestionButton from '../DeleteQuestionButton/DeleteQuestionButton';
 import HideAnswerButton from '../HideAnswerButton/HideAnswerButton';
+import LikeQuestionButton from '../LikeQuestionButton/LikeQuestionButton';
 // import Loader from '../Loader/Loader';
 class QuestionItem extends Component {
     constructor(props) {
@@ -54,13 +55,14 @@ class QuestionItem extends Component {
                             className="question-user"
                         >Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}
                         </Link>
-                        <p className="question-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`}</p>
-                        {question.numberOfAnswers !== 0 && !isDisplayHideAnswerButton ? <ShowAnswerButton key={question.id} questionId={question.id}></ShowAnswerButton> : ''}
+                        <p className="question-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`} - Số lượt thích: {question.likeUsers ? question.likeUsers.length : 0}</p>
+                        <LikeQuestionButton isLiked={question.isLiked} questionId={question.id} likeUsers={question.likeUsers}></LikeQuestionButton>
                         {(new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <ShowInputAnswerButton questionId={question.id}></ShowInputAnswerButton> : ""}
                         {question.deletePermission ? <DeleteQuestionButton questionId={question.id}></DeleteQuestionButton> : ''}
                         <hr />
                         {isDisplayInputAnswer[question.id] && (new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <InputAnswer questionId={question.id}></InputAnswer> : ''}
                         {elmAnswers}
+                        {question.numberOfAnswers !== 0 && !isDisplayHideAnswerButton ? <ShowAnswerButton key={question.id} questionId={question.id}></ShowAnswerButton> : ''}
                         {question.numberOfAnswers !== 0 && isDisplayHideAnswerButton ? <HideAnswerButton questionId={question.id}></HideAnswerButton> : ''}
                     </div>
                 </div>

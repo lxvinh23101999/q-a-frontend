@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import callApi from '../../helpers/apiCaller';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-// import * as actions from '../../actions/index';
 import './style.css';
 class LoginForm extends Component {
     constructor(props) {
@@ -11,7 +10,6 @@ class LoginForm extends Component {
             username: "",
             password: "",
             showPassword: false,
-            redirectToReferrer: false,
             error: "",
         }
     }
@@ -22,9 +20,8 @@ class LoginForm extends Component {
             password: this.state.password
         }
         callApi(`users/login`, 'POST', { "username": loginInfo.username, "password": loginInfo.password }).then(res => {
-            this.setState(() => ({
-                redirectToReferrer: true
-            }));
+            window.localStorage.setItem('isLogged',true);
+            window.location.href = "http://localhost:3000/";
         }).catch(err => {
             this.setState({
                 error: err.response.data
@@ -45,8 +42,8 @@ class LoginForm extends Component {
         })
     }
     render() {
-        if (this.state.redirectToReferrer) {
-            return <Redirect to={'/'} />;
+        if (window.localStorage.getItem('isLogged')) {
+            return <Redirect to={'/sessions'} />;
         }
         return (
             <React.Fragment>

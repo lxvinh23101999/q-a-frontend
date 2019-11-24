@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import UserItem from '../UserItem/UserItem';    
 import SearchUser from '../SearchUser/SearchUser';    
-import * as actions from '../../actions/index';
 import _ from 'lodash';
 class UserList extends Component {
-    componentDidMount() {
-        this.props.fetchAllUsers();
-    }
     render() {
         let { users, searchUser } = this.props;
         let filterUsers = [];
@@ -58,11 +54,4 @@ const mapStateToProps = (state) => {
         searchUser: state.searchUser
     }
 };
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        fetchAllUsers: () => {
-            dispatch(actions.actFetchUsersRequest());
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default connect(mapStateToProps, null)(UserList);

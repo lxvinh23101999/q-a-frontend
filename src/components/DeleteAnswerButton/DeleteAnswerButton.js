@@ -22,7 +22,7 @@ class DeleteAnswerButton extends Component {
     render() {
         return (
             <React.Fragment>
-                <button type="button" className="btn btn-danger btn-xs" onClick={this.onClick}>
+                <button type="button" className="btn btn-danger btn-xs" style={{ marginLeft: 10 + 'px' }} onClick={this.onClick}>
                     <i className="fa fa-trash" aria-hidden="true"></i> Xóa
                 </button>
             </React.Fragment>

@@ -3,6 +3,10 @@ import users from './users';
 import sessions from './sessions';
 import questions from './questions';
 import answers from './answers';
+import surveys from './surveys';
+import surveyQuestions from './surveyQuestions';
+import manageSessions from './manageSessions';
+import manageSurveys from './manageSurveys';
 import myBasicInfo from './myBasicInfo';
 import myAllQuestions from './myAllQuestions';
 import myAllAnswers from './myAllAnswers';
@@ -22,6 +26,10 @@ const rootReducer = combineReducers({
     sessions,
     questions,
     answers,
+    surveys,
+    surveyQuestions,
+    manageSessions,
+    manageSurveys,
     myBasicInfo,
     myAllQuestions,
     myAllAnswers,

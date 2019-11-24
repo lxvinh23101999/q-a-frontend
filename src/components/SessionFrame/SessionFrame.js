@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import SessionItem from '../SessionItem/SessionItem';
 import SearchSession from '../SearchSession/SearchSession';
 import { connect } from 'react-redux';
-import { actFetchSessionsRequest } from './../../actions/index';
 import Loader from '../Loader/Loader';
 import FilterSession from '../FilterSession/FilterSession';
 class SessionFrame extends Component {
@@ -11,9 +10,6 @@ class SessionFrame extends Component {
         this.state = {
             indexPagination: 1
         }
-    }
-    componentDidMount() {
-        this.props.fetchAllSessions();
     }
     onChangeIndexPagination = (e) => {
         e.preventDefault();
@@ -41,13 +37,11 @@ class SessionFrame extends Component {
         }
     }
     render() {
-
         let { sessions, searchSession, filterBy, isLoading } = this.props;
         if (isLoading) return <Loader></Loader>
         let keyWord = searchSession.keyWord.toLowerCase();
         let { indexPagination } = this.state;
         let filterSessions = [];
-        console.log(filterBy);
         sessions.forEach((session) => {
             let str = session.topic;
             if (str.toLowerCase().includes(keyWord)) {
@@ -58,6 +52,11 @@ class SessionFrame extends Component {
                 }
                 else if (filterBy === "lock") {
                     if ((new Date(session.closedAt).getTime() - Date.now() < 0 && session.closedAt)) {
+                        filterSessions.push(session);
+                    }
+                }
+                else if (filterBy === "mysessions") {
+                    if (session.owner === this.props.userInfo.id) {
                         filterSessions.push(session);
                     }
                 }
@@ -84,8 +83,8 @@ class SessionFrame extends Component {
         }
         return (
             <React.Fragment>
-                <div className="panel panel-primary">
-                    <div className="panel-heading"><h4><i className="fa fa-bars" aria-hidden="true" style={{ marginRight: 10 + 'px' }}></i>{filterBy === "all" ? "Danh sách tất cả phiên hỏi đáp" : filterBy === "unlock" ? "Danh sách phiên hỏi đáp đang hoạt động": "Danh sách phiên hỏi đáp đã đóng"}</h4></div>
+                <div className="panel panel-default">
+                    <div className="panel-heading"><h4><i className="fa fa-bars" aria-hidden="true" style={{ marginRight: 10 + 'px' }}></i>{filterBy === "all" ? "Danh sách tất cả phiên hỏi đáp" : filterBy === "unlock" ? "Danh sách phiên hỏi đáp đang hoạt động": filterBy === "lock" ? "Danh sách phiên hỏi đáp đã đóng" : "Danh sách phiên hỏi đáp của tôi"}</h4></div>
                     <div className="panel-body bg-color">
                         <div className="row">
                             <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
@@ -127,11 +126,4 @@ const mapStateToProps = (state) => {
         isLoading: state.isLoading
     }
 };
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        fetchAllSessions: () => {
-            dispatch(actFetchSessionsRequest());
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(SessionFrame);
+export default connect(mapStateToProps, null)(SessionFrame);
