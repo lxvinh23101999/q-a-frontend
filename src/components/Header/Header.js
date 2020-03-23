@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import callApi from '../../helpers/apiCaller';
+import './header.css';
 class Header extends Component {
     onLogout = (e) => {
         e.preventDefault();
@@ -39,29 +40,35 @@ class Header extends Component {
                                     <li>
                                         <Link
                                             to={'/login'}
-                                        ><span className="glyphicon glyphicon-log-in"></span> Login
+                                        ><span className="glyphicon glyphicon-log-in"></span> Đăng nhập
                                         </Link>
                                     </li> : ""}
                                 {!window.localStorage.getItem('isLogged') ?
                                     <li>
                                         <Link
                                             to={'/signup'}
-                                        ><span className="glyphicon glyphicon-user"></span> Sign up
+                                        ><span className="glyphicon glyphicon-user"></span> Đăng ký
                                         </Link>
                                     </li> : ""}
                                 {window.localStorage.getItem('isLogged') ?
-                                    <li>
-                                        <Link
-                                            to={'/myinfo'}
-                                        ><span className="fa fa-info"></span> Thông tin
-                                        </Link>
+                                    <li className="dropdown">
+                                        <a className="dropdown-toggle" data-toggle="dropdown" href="/" style={{fontSize: '20px'}}>
+                                    <span className="caret"></span></a>
+                                        <ul className="dropdown-menu">
+                                            <li>
+                                                <Link
+                                                    to={'/myinfo'}
+                                                ><span className="fa fa-info"></span> Thông tin
+                                            </Link>
+                                            </li>
+                                            <li>
+                                                <a href="/" onClick={this.onLogout}
+                                                ><span className="fa fa-sign-out"></span> Đăng xuất
+                                            </a>
+                                            </li>
+                                        </ul>
                                     </li> : ""}
-                                {window.localStorage.getItem('isLogged') ?
-                                    <li>
-                                        <a href="/" onClick={this.onLogout}
-                                        ><span className="fa fa-sign-out"></span> Logout
-                                        </a>
-                                    </li> : ""}
+
                             </ul>
                         </div>
                     </nav>

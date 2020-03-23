@@ -12,7 +12,7 @@ class AnswerItem extends Component {
             <React.Fragment>
                 <div className="media itembg-color2 pd-10 mb-20">
                     <div className="media-left">
-                        <img src="https://www.w3schools.com/bootstrap/img_avatar4.png" alt="answer" className="media-object anh" style={{ width: 45 + 'px' }} />
+                        <img src="https://st2.depositphotos.com/3369547/11372/v/950/depositphotos_113724550-stock-illustration-businessman-concept-avatar-male-person.jpg" alt="answer" className="media-object anh" style={{ width: 45 + 'px' }} />
                     </div>
                     <div className="media-body">
                         <h4 className="media-heading">{answer.nameOfOwner} <small><i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(answer.createdAt)).toLocaleString()}</small></h4>

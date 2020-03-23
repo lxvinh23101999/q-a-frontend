@@ -4,6 +4,7 @@ import ModalAddSurvey from '../../components/ModalAddSurvey/ModalAddSurvey';
 import SurveyFrame from '../../components/SurveyFrame/SurveyFrame';
 import * as actions from './../../actions/index';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import callApi from '../../helpers/apiCaller';
 class SurveyPage extends Component {
     constructor(props) {
@@ -31,15 +32,17 @@ class SurveyPage extends Component {
         });
     }
     render() {
+        let { surveys } = this.props;
+        let unlockSurveys = _.filter(surveys, function(survey) { return (new Date(survey.closedAt).getTime() - Date.now() > 0 || !survey.closedAt); }); 
         return (
             <React.Fragment>
                 <div className="container-fluid">
                     {this.state.role === "student" ? "" :
                         <div className="row">
                             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                {this.state.role === "student" ? "" : <ModalAddSurvey></ModalAddSurvey>}
                             </div>
                             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                {this.state.role === "student" ? "" : <ModalAddSurvey></ModalAddSurvey>}
                             </div>
                         </div>}
                     <div className="row">
@@ -54,6 +57,15 @@ class SurveyPage extends Component {
                                     </ul>
                                 </div>
                             </div>
+                            <div style={{ borderLeft: '6px solid #4285F4', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold' }}>
+                                <p>Tổng số phiên khảo sát: {surveys.length} </p>
+                            </div>
+                            <div style={{ borderLeft: '6px solid #449D44', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold'  }}>
+                                <p>Phiên khảo sát đang hoạt động: {unlockSurveys.length}</p>
+                            </div>
+                            <div style={{ borderLeft: '6px solid #EC971F', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold'  }}>
+                                <p>Phiên khảo sát đã đóng: {surveys.length - unlockSurveys.length}</p>
+                            </div>
                         </div>
                         <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                             <SurveyFrame></SurveyFrame>
@@ -66,7 +78,7 @@ class SurveyPage extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        // surveys: state.surveys,
+        surveys: state.surveys,
     }
 };
 const mapDispatchToProps = (dispatch, props) => {

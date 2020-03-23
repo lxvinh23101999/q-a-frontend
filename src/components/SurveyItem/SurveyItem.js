@@ -45,17 +45,17 @@ class SurveyItem extends Component {
                         <h4 className="media-heading">
                             <Link
                                 to={`/surveys/${survey.id}`}
-                                className="survey-title"
-                            >Chủ đề: {survey.topic}
+                                className={(new Date(survey.closedAt).getTime() - Date.now() > 0 || !survey.closedAt) ? "session-title" : "session-title-p"}
+                            >Chủ đề: {survey.topic} {(new Date(survey.closedAt).getTime() - Date.now() > 0 || !survey.closedAt) ? "" : "(Đã đóng)"}
                                 {/* {survey.hasPassword ? <i className="fa fa-lock" aria-hidden="true"></i> : <i className="fa fa-unlock" aria-hidden="true"></i>} */}
                             </Link>
                         </h4>
                         <Link
                             to={`/surveys/${survey.id}`}
-                            className="survey-master"
+                            className="session-master"
                         >Chủ tọa: {survey.nameOfOwner}
                         </Link>
-                        <p className="survey-number"><span className="badge">{survey.surveyQuestions.length === 0 ? "Chưa có câu hỏi" : `Số câu hỏi: ${survey.surveyQuestions.length}`} </span><span className="fa fa-clock-o badge" aria-hidden="true"> {(new Date(survey.createdAt)).toLocaleString()}</span><span className="fa fa-times badge" aria-hidden="true"> {!survey.closedAt ? "Chưa xác định" : (new Date(survey.closedAt)).toLocaleString()}</span></p>
+                        <p className="session-number"><span>{survey.surveyQuestions.length === 0 ? "Chưa có câu hỏi" : `Số câu hỏi: ${survey.surveyQuestions.length}`} </span> - Tạo lúc: {(new Date(survey.createdAt)).toLocaleString()} - Đóng lúc: {!survey.closedAt ? "Chưa xác định" : (new Date(survey.closedAt)).toLocaleString()}</p>
                         {survey.permission ? <button type="button" className="btn btn-danger btn-xs" onClick={this.onClick}>
                             <i className="fa fa-trash" aria-hidden="true"></i> Xóa
                         </button> : ""}

@@ -1,0 +1,25 @@
+.page-footer{
+    background-color: #1c2331;
+    color: #fff;
+    text-align: center!important;
+}
+.after ul{
+    padding: 0px
+}
+.after ul li{
+    list-style: none;
+    margin-top: 10px;
+}
+.after{
+    margin-top: 35px;
+}
+.col-md-6{
+    padding-left: 50px;
+}
+.after ul li i{
+    margin-right: 10px;
+}
+.after ul li a{
+    
+    color: #fff!important;  
+}

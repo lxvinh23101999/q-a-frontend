@@ -11,6 +11,7 @@ class AddSurveyQuestionsCollapse extends Component {
             contentQuestion: '',
             typeQuestion: 1,
             selections: [{index: 1, contentSelection: ''}],
+            error: "",
         }
     }
     onAddSelection = () => {
@@ -58,6 +59,9 @@ class AddSurveyQuestionsCollapse extends Component {
         let selections = this.state.selections.map((selection) => {
             return selection.contentSelection;
         });
+        _.remove(selections, function(selection) {
+            return !selection
+          });
         let data = {
             surveyId: this.props.surveyId,
             contentQuestion: this.state.contentQuestion,
@@ -68,7 +72,9 @@ class AddSurveyQuestionsCollapse extends Component {
             this.props.onAddSurveyQuestion(res.data.surveyQuestion);
             this.onClear();
         }).catch(err => {
-            console.log(err.response.data);
+            this.setState({
+                error: err.response.data
+            })
         });
     }
     onClear = () => {
@@ -119,6 +125,7 @@ class AddSurveyQuestionsCollapse extends Component {
                         </div>
                         {/* <button type="button" className="btn btn-default"><i className="fa fa-trash-o" aria-hidden="true"></i></button> */}
                         <hr></hr>
+                        {this.state.error ? <p style={{ color: 'red', marginTop: '5px' }}><i>{this.state.error}</i></p> : ''}
                         <button className="btn btn-success" onClick={this.onAddQuestion}>Lưu lại</button>
                     </div>
                 </div>

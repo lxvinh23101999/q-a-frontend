@@ -3,8 +3,8 @@ import CanvasJSReact from '../../lib/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 class PieChart extends Component {
     render() {
-        let { data, contentQuestion, index } = this.props;
-        let text = "Câu " + index + ": " + contentQuestion;
+        let { data, contentQuestion, index, total } = this.props;
+        let text = "Câu " + index + ": " + contentQuestion + " ( " + total + " câu trả lời )";
         const options = {
             theme: "dark2",
             animationEnabled: true,

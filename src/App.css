@@ -78,6 +78,12 @@
 .session-title:hover {
   text-decoration: none;
 }
+.session-title-p {
+  color: red;
+}
+.session-title-p:hover {
+  text-decoration: none;
+}
 .session-master {
   color: #808080;
 }

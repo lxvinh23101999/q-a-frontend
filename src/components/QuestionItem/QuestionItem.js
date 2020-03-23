@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 // import * as actions from '../../actions/index';
@@ -37,25 +36,13 @@ class QuestionItem extends Component {
             <React.Fragment>
                 <div className="media mb-30 itembg-color pd-15">
                     <div className="media-left">
-                        <img src="https://www.w3schools.com/bootstrap/img_avatar3.png" alt="anh" className="media-object anh" />
+                        <img src="https://cdn1.iconfinder.com/data/icons/cybercrime-internet-security/33/antivirus-03-512.png" alt="anh" className="media-object anh" />
                     </div>
                     <div className="media-body">
-                        <div className="row">
-                            <h4 className="media-heading col-xs-11 col-sm-11 col-md-11 col-lg-11">
-                                <Link
-                                    to={'/'}
-                                    className="question-content"
-                                >Câu hỏi: {question.contentQuestion}
-                                </Link>
-                                {/* <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> */}
-                            </h4>
-                        </div>
-                        <Link
-                            to={'/'}
-                            className="question-user"
-                        >Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}
-                        </Link>
-                        <p className="question-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`} - Số lượt thích: {question.likeUsers ? question.likeUsers.length : 0}</p>
+                        <h4 className="media-heading" style={{color: 'rgb(25, 0, 255)'}}>Câu hỏi: {question.contentQuestion}
+                        </h4>
+                        <p style={{color: '#808080'}}>Đăng bởi: {question.nameOfOwner} <i className="fa fa-clock-o" aria-hidden="true"></i> {(new Date(question.createdAt)).toLocaleString()}</p>
+                        <p className="session-number">{question.numberOfAnswers === 0 ? 'Chưa có câu trả lời' : `Số câu trả lời: ${question.numberOfAnswers}`} - Số lượt thích: {question.likeUsers ? question.likeUsers.length : 0}</p>
                         <LikeQuestionButton isLiked={question.isLiked} questionId={question.id} likeUsers={question.likeUsers}></LikeQuestionButton>
                         {(new Date(closedAtSession).getTime() - Date.now() > 0 || !closedAtSession) ? <ShowInputAnswerButton questionId={question.id}></ShowInputAnswerButton> : ""}
                         {question.deletePermission ? <DeleteQuestionButton questionId={question.id}></DeleteQuestionButton> : ''}

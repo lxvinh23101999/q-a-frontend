@@ -5,6 +5,7 @@ import SessionFrame from '../../components/SessionFrame/SessionFrame';
 import ModalAddSession from '../../components/ModalAddSession/ModalAddSession';
 import { Link } from 'react-router-dom';
 import callApi from '../../helpers/apiCaller';
+import _ from 'lodash';
 class SessionPage extends Component {
     constructor(props) {
         super(props);
@@ -32,15 +33,17 @@ class SessionPage extends Component {
         });
     }
     render() {
+        let { sessions } = this.props;
+        let unlockSessions = _.filter(sessions, function(session) { return (new Date(session.closedAt).getTime() - Date.now() > 0 || !session.closedAt); });
         return (
             <React.Fragment>
                 <div className="container-fluid">
                     {this.state.userInfo.role === "student" ? "" :
                         <div className="row">
                             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                {this.state.userInfo.role === "student" ? "" : <ModalAddSession></ModalAddSession>}
                             </div>
                             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                {this.state.userInfo.role === "student" ? "" : <ModalAddSession></ModalAddSession>}
                             </div>
                         </div>}
                     <div className="row">
@@ -55,8 +58,14 @@ class SessionPage extends Component {
                                     </ul>
                                 </div>
                             </div>
-                            <div style={{ borderLeft: '6px solid #4285F4', backgroundColor: '#ffff', marginBottom: '40px' }}>
-                                <p>Tổng số phiên hỏi đáp</p>
+                            <div style={{ borderLeft: '6px solid #4285F4', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold' }}>
+                                <p>Tổng số phiên hỏi đáp: {sessions.length} </p>
+                            </div>
+                            <div style={{ borderLeft: '6px solid #449D44', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold'  }}>
+                                <p>Phiên hỏi đáp đang hoạt động: {unlockSessions.length}</p>
+                            </div>
+                            <div style={{ borderLeft: '6px solid #EC971F', backgroundColor: '#ffff', marginBottom: '40px', paddingLeft: '5px', fontSize: '15px', fontWeight: 'bold'  }}>
+                                <p>Phiên hỏi đáp đã đóng: {sessions.length - unlockSessions.length}</p>
                             </div>
                         </div>
                         <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -70,6 +79,7 @@ class SessionPage extends Component {
 }
 const mapStateToProps = (state) => {
     return {
+        sessions: state.sessions
     }
 };
 const mapDispatchToProps = (dispatch, props) => {

@@ -23,7 +23,7 @@ class QuestionResultFrame extends Component {
                             y: y
                         })
                     }
-                    return <PieChart key={index} data={data} index={index + 1} contentQuestion={surveyQuestion.contentQuestion}></PieChart>;
+                    return <PieChart key={index} data={data} index={index + 1} total={total} contentQuestion={surveyQuestion.contentQuestion}></PieChart>;
                 }
                 else {
                     for (let i = 0; i < surveyQuestion.selections.length; i++) {
@@ -44,7 +44,7 @@ class QuestionResultFrame extends Component {
                             y: y
                         })
                     }
-                    return <ColumnChart key={index} data={data} index={index + 1} contentQuestion={surveyQuestion.contentQuestion}></ColumnChart>;
+                    return <ColumnChart key={index} data={data} index={index + 1} total={total} contentQuestion={surveyQuestion.contentQuestion}></ColumnChart>;
                 }
             }
             return "";

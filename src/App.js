@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
-// import Footer from './components/Footer/Footer';
+import Footer from './components/Footer/Footer';
 import routes from './routes';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
             <Router>
                 <Header></Header>
                 {this.showPage(routes)}
-                {/* <Footer></Footer> */}
+                <Footer></Footer>
             </Router>
         );
     }
