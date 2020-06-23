@@ -23,9 +23,9 @@ class LoginForm extends Component {
             window.localStorage.setItem('isLogged',true);
             window.location.href = "http://localhost:3000/";
         }).catch(err => {
-            this.setState({
-                error: err.response.data
-            })
+            // this.setState({
+            //     // error: err.response.data
+            // })
         });
     }
     onChange = (event) => {
